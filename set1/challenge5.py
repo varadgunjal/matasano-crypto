@@ -16,15 +16,17 @@ def multi_byte_xor_encode_2(input_text, cipher_key):
     print(cipher_text)  
 
 # Python 3
-def multi_byte_xor_encode_3(input_text, cipher_key):
-    input_byte_array = bytes(input_text, "utf-8")
-    input_hex = hexlify(input_byte_array).decode("utf-8")
+def convert_char_string_to_hex_3(s):
+    byte_array = bytes(s, "utf-8")
+    hex_string = hexlify(byte_array).decode("utf-8")
 
-    key_byte_array = bytes(cipher_key, "utf-8")
-    key_hex = hexlify(key_byte_array).decode("utf-8")
+    return hex_string
+
+def multi_byte_xor_encode_3(input_text, cipher_key):
+    input_hex = convert_char_string_to_hex_3(input_text)
+    key_hex = convert_char_string_to_hex_3(cipher_key)
 
     cipher_text = xor_hex_strings_3(input_hex, key_hex)    
     print(cipher_text) 
 
-
-multi_byte_xor_encode_3(input_text, cipher_key)
+# multi_byte_xor_encode_3(input_text, cipher_key)
