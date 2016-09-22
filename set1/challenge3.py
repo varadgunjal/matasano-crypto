@@ -28,7 +28,8 @@ def crack_single_byte_xor(cipher_text):
         # text = text_hex.decode("hex")
 
         # Python 3
-        text = bytes.fromhex(text_hex).decode("utf-8", "ignore")  # can't decode some bytes with this
+        # can't decode some bytes with this
+        text = bytes.fromhex(text_hex).decode("utf-8", "ignore")  
 
         valid = True
         for char in text:
@@ -36,27 +37,30 @@ def crack_single_byte_xor(cipher_text):
                 valid = False
                 break
 
-        if valid and " " in text:
+        if valid:
             print(text, ", ", password)
 
 # crack_single_byte_xor(cipher)
 
-# def single_byte_xor_for_multi_byte_key(cipher_text):
-#     ascii_frequency = []
-#     for password in byte_passwords:
-#         text_hex = xor_hex_strings(cipher_text, password)        
-#         text = text_hex.decode("hex")
-#         frequency = 0
+def single_byte_xor_for_multi_byte_key(most_common_bytes):
 
-#         for char in text:
-#             if char in string.printable:
-#                 frequency += 1
+    most_probable_byte_password = None
+    max_matching_chars = 0
+    
+    for password in byte_passwords:
+        # For each byte in most_common_bytes, xor with a candidate byte 
+        # password.  Convert the output bytes to ascii / utf-8 and verify how
+        # many, if any, match with ETAOINSHRDLU[space]
 
-#         ascii_frequency.append((password, frequency))
+        chars_match = 0
+
+        for cipher_byte in most_common_bytes:
+            character = chr(int(cipher_byte, 16) ^ int(password, 16))
+            if character in "etaoinshrdlu ":
+                chars_match += 1
         
-#         # print text, ", ", password
-#         # time.sleep(1)
+        if chars_match > max_matching_chars:
+            max_matching_chars = chars_match
+            most_probable_byte_password = password
 
-#     # return password corresponding to max ascii character frequency
-#     # print ascii_frequency
-#     return sorted(ascii_frequency, key=lambda x:x[1], reverse=True)[0][0]
+    return most_probable_byte_password
