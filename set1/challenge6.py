@@ -119,9 +119,9 @@ def crack_blocks(hex_code, keysize):
 
     for t in transposed:
         # Count the 13 most common bytes. With luck, they should 
-        # correspond to ETAOINSHRDLU[space]. Now we only consider those single 
+        # correspond to ETAOIN[space]SHRDLU. Now we only consider those single 
         # byte keys which when xor-ed with each of these bytes gives
-        # ETAOINSHRDLU[space], at least those which give the max percentage of
+        # ETAOIN[space]SHRDLU, at least those which give the max percentage of
         # matches.
 
         split_t = [t[i:i+2] for i in range(0, len(t), 2)]
@@ -151,7 +151,8 @@ def crack_multi_byte_repeated_xor(input_file, keysize=0):
     
     # the real deal
     else:
-        possible_keysizes = (2, 5, 29)  # gotten from Hamming distance                                          # experiments
+        possible_keysizes = (2, 5, 29)  # gotten from Hamming distance
+                                        # experiments
 
         for keysize in possible_keysizes:
             most_probable_key = crack_blocks(hex_encoding, keysize)
@@ -165,5 +166,5 @@ def crack_multi_byte_repeated_xor(input_file, keysize=0):
 
 # The Matasano guys have an unhealthy obsession with Vanilla Ice.
 # The damn decryption is the lyrics of the song 'Play That Funky Music'.
-# Final decryption key - Length =  29 bytes
+# Final decryption : Length =  29 bytes
 # Key = 5465726d696e61746f7220583a204272696e6720746865206e6f697365
