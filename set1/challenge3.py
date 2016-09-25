@@ -56,7 +56,7 @@ def single_byte_xor_for_multi_byte_key(most_common_bytes):
 
         for cipher_byte in most_common_bytes:
             character = chr(int(cipher_byte, 16) ^ int(password, 16))
-            if character in "etaoinshrdlu ":
+            if character in "etaoin shrdlu":
                 chars_match += 1
         
         if chars_match > max_matching_chars:
