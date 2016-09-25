@@ -31,9 +31,12 @@ def calculate_hamming_distance_between(s1, s2):
 
     return z.count("1")
 
-def decode_text(input_file):
+def decode_text(input_file, b64=True):
     f = open(input_file).read()
-    binary_encoding = b64decode(f)
+    if b64:
+        binary_encoding = b64decode(f)
+    else:
+        return f
     
     # Python 2.x
     # hex_encoding = binary_encoding.encode("hex")
@@ -42,17 +45,19 @@ def decode_text(input_file):
     hex_encoding = hexlify(binary_encoding).decode("utf-8") # need to return a                                                          # hex string
     return hex_encoding
 
-def get_keysize(input_file):
-    hex_encoding = decode_text(input_file)
+def get_keysize(input_file, b64=True):
+    hex_encoding = decode_text(input_file, b64)
     keysize_candidates = []
 
     # Estimate with 2 blocks 
 
     # for keysize in keysize_values:
     #     # each byte = 2 characters in the encoding
-    #     st_1, st_2 = hex_encoding[0:2*keysize], hex_encoding[2*keysize:4*keysize]
+    #     st_1, st_2 = hex_encoding[0:2*keysize], \
+    #                         hex_encoding[2*keysize:4*keysize]
     #     hamming_distance = calculate_hamming_distance_between(st_1, st_2)
-    #     keysize_candidates.append((keysize, (float) (hamming_distance / keysize)))
+    #     keysize_candidates.append((keysize, \
+    #                         (float) (hamming_distance / keysize)))
 
     #     # print("Keysize : ", keysize, " Hamming Distance : ", hamming_distance, " Normalized : ", 
     #     #         ((float) (hamming_distance / keysize)), "\n")
@@ -137,8 +142,9 @@ def crack_blocks(hex_code, keysize):
 # The probable keysizes for this text are 2, 5, 29 on
 # analysis of hamming distance with 2 & 4 initial block sizes
 
-def crack_multi_byte_repeated_xor(input_file, keysize=0):
-    hex_encoding = decode_text(input_file)
+# Change b64 to False for picoCTF or any non-bas 64 encoding
+def crack_multi_byte_repeated_xor(input_file, keysize=0, b64=True):
+    hex_encoding = decode_text(input_file, b64)
 
     # Optional keysize argument to test with various keysizes
     if keysize != 0:
@@ -147,12 +153,13 @@ def crack_multi_byte_repeated_xor(input_file, keysize=0):
         # text = text_hex.decode("hex")
         text = bytes.fromhex(text_hex).decode("utf-8", "ignore")
 
-        print("\n\nKeysize\t:\t", keysize, "\nKey\t:\t", most_probable_key, "\nText\t:\t", text)
+        print("\n\nKeysize\t:\t", keysize, "\nKey\t:\t", most_probable_key,             "\nText\t:\t", text)
     
     # the real deal
     else:
-        possible_keysizes = (2, 5, 29)  # gotten from Hamming distance
-                                        # experiments
+        # gotten from Hamming distance experiments
+        possible_keysizes = (2, 5, 29)    # Matasano Crypto
+        # possible_keysizes = (3, 21, 28)     # picoCTF 2014        
 
         for keysize in possible_keysizes:
             most_probable_key = crack_blocks(hex_encoding, keysize)
