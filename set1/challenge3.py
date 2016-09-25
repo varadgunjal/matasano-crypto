@@ -50,7 +50,7 @@ def single_byte_xor_for_multi_byte_key(most_common_bytes):
     for password in byte_passwords:
         # For each byte in most_common_bytes, xor with a candidate byte 
         # password.  Convert the output bytes to ascii / utf-8 and verify how
-        # many, if any, match with ETAOINSHRDLU[space]
+        # many, if any, match with ETAOIN[space]SHRDLU
 
         chars_match = 0
 
