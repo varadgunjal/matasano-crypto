@@ -157,16 +157,10 @@ def crack_multi_byte_repeated_xor(input_file, keysize=0, b64=True):
     
     # the real deal
     else:
-<<<<<<< HEAD
         # gotten from Hamming distance experiments
         possible_keysizes = (2, 5, 29)    # Matasano Crypto
-=======
-        possible_keysizes = (2, 5, 29)  # gotten from Hamming distance
-                                        # experiments
->>>>>>> 310fb1bfd08e850ee06ef5c2dec70fa18016871e
+        # possible_keysizes = (3, 21, 28)     # picoCTF 2014        
 
-        # possible_keysizes = (3, 21, 28)     # picoCTF 2014
-        
         for keysize in possible_keysizes:
             most_probable_key = crack_blocks(hex_encoding, keysize)
             text_hex = xor_hex_strings_3(hex_encoding, most_probable_key) 
